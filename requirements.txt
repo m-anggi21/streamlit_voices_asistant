@@ -1,18 +1,35 @@
-streamlit==1.32.0
-streamlit-webrtc==0.47.1
+# =========================
+# CORE WEB APP
+# =========================
+streamlit>=1.30.0
 
-openai==1.12.0
-edge-tts==6.1.0
+# =========================
+# DATABASE
+# =========================
+mysql-connector-python>=8.0.33
 
-mysql-connector-python==8.3.0
+# =========================
+# SPEECH TO TEXT (STT)
+# =========================
+SpeechRecognition>=3.10.0
+st-audiorec>=0.1.3
 
-numpy==1.26.4
-pandas==2.2.0
+# =========================
+# TEXT TO SPEECH (TTS)
+# =========================
+gTTS>=2.5.1
 
-aiohttp==3.9.3
+# =========================
+# AUDIO / FILE HANDLING
+# =========================
+pydub>=0.25.1
 
-# untuk audio processing whisper
-soundfile==0.12.1
+# =========================
+# STREAMLIT UTILITIES
+# =========================
+streamlit-autorefresh>=1.0.1
 
-# untuk keamanan dan utilitas tambahan
-python-dotenv==1.0.1
+# =========================
+# UTILITIES (SAFE)
+# =========================
+typing-extensions>=4.8.0
