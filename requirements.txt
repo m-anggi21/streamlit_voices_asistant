@@ -12,7 +12,7 @@ mysql-connector-python>=8.0.33
 # SPEECH TO TEXT (STT)
 # =========================
 SpeechRecognition>=3.10.0
-st-audiorec>=0.1.3
+streamlit-audiorec>=0.1.3
 
 # =========================
 # TEXT TO SPEECH (TTS)
