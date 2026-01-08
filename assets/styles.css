@@ -1,0 +1,709 @@
+/* assets/style.css */
+
+/* ===== RESPONSIVE LAYOUT (DESKTOP LEBAR, MOBILE RAPAT) ===== */
+.block-container{
+  /* Desktop / layar besar */
+  max-width: 1200px;          /* boleh 1200–1400 sesuai selera */
+  padding-top: 2.5rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+
+  /* center */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Tablet */
+@media (max-width: 1024px){
+  .block-container{
+    max-width: 960px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* HP */
+@media (max-width: 640px){
+  .block-container{
+    max-width: 100%;
+    padding-top: 1.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* judul biar tidak kebesaran di HP */
+  .depo-title{
+    font-size: 22px;
+  }
+
+  /* tombol full width di HP (opsional, enak dipencet) */
+  div.stButton > button{
+    width: 100%;
+  }
+}
+
+/* ===== CARD ===== */
+/* .depo-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 22px 22px 18px 22px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+} */
+
+/* ===== JUDUL ===== */
+.depo-title {
+  text-align: center;
+  font-weight: 800;
+  font-size: 28px;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+/* ===== LINK ===== */
+.depo-link {
+  color: #2b6cb0;
+  text-decoration: none;
+  font-weight: 600;
+}
+.depo-link:hover { text-decoration: underline; }
+
+/* ===== TOMBOL DEFAULT (Login/Daftar) ===== */
+div.stButton > button {
+  border-radius: 12px;
+  height: 44px;
+  font-weight: 700;
+}
+
+/* ===== AREA LINK BAWAH ===== */
+.depo-bottom {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.depo-inline-row {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* tombol "Daftar di sini" dibuat kecil seperti link (khusus key goto_signup) */
+button[aria-label="goto_signup"]{
+  padding: 0px 4px !important;
+  min-height: 18px !important;
+  font-size: 14px !important;
+  background: transparent !important;
+  border: none !important;
+  color: #2b6cb0 !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+  box-shadow: none !important;
+}
+button[aria-label="goto_signup"]:hover{
+  background: transparent !important;
+  color: #1a4f8b !important;
+}
+
+/* tombol "Login di sini" kecil seperti link (khusus key goto_login) */
+button[aria-label="goto_login"]{
+  padding: 0px 4px !important;
+  min-height: 18px !important;
+  font-size: 14px !important;
+  background: transparent !important;
+  border: none !important;
+  color: #2b6cb0 !important;
+  font-weight: 600 !important;
+  text-decoration: underline !important;
+  box-shadow: none !important;
+}
+button[aria-label="goto_login"]:hover{
+  background: transparent !important;
+  color: #1a4f8b !important;
+}
+
+/* ===== ADMIN ORDER ITEM & TOTAL ===== */
+
+/* Judul item */
+.admin-item-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+/* Baris item */
+.admin-item-row {
+  font-size: 18px;
+  line-height: 1.6;
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 8px;
+}
+
+/* Nama item */
+.admin-item-name {
+  font-weight: 700;
+}
+
+/* Harga item */
+.admin-item-price {
+  font-weight: 600;
+}
+
+/* Garis pemisah total */
+.admin-total {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  font-size: 18px;
+  font-weight: 800;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===============================
+   VOICE RECORDER: HIDE DOWNLOAD
+   =============================== */
+
+/* st_audiorec menampilkan 4 tombol: Start/Stop/Reset/Download
+   Kita sembunyikan tombol ke-4 (Download) khusus di wrapper ini */
+.depo-voice-recorder div[data-testid="stHorizontalBlock"] > div:nth-child(4) {
+  display: none !important;
+}
+
+/* ===== MODE INPUT (LABEL + DROPDOWN KECIL) ===== */
+.mode-label{
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 8px;
+  margin-bottom: 6px;
+}
+
+/* ======================================
+   SELECTBOX: PILIH PRODUK (LEBAR)
+   ====================================== */
+
+section.main div[data-testid="stSelectbox"] 
+div[data-baseweb="select"]{
+  max-width: 25% !important;
+  width: 25% !important;
+}
+
+/* rapikan tinggi */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div{
+  min-height: 34px;
+}
+
+/* ===============================
+   ADMIN DASHBOARD – SELECTBOX LEBAR
+   =============================== */
+
+/* Perbesar dropdown admin */
+section.main div[data-testid="stSelectbox"] div[data-baseweb="select"]{
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Tinggi dropdown admin biar enak dibaca */
+section.main div[data-testid="stSelectbox"] div[data-baseweb="select"] > div{
+  min-height: 42px !important;
+  font-size: 15px;
+}
+
+/* sembunyikan checkbox show_pw (dipakai untuk toggle show/hide via ikon overlay) */
+div[data-testid="stCheckbox"] { 
+  display: none !important; 
+}
+
+/* agar bisa ditempeli overlay (ikon mata) */
+div[data-testid="stTextInput"] { 
+  position: relative; 
+}
+
+/* ikon mata di kanan dalam field password */
+.pw-eye-overlay{
+  position: absolute;
+  right: 14px;
+  top: 36px;
+  width: 36px;
+  height: 30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  user-select:none;
+  z-index: 99;
+  opacity: 0.9;
+}
+.pw-eye-overlay:hover{ 
+  opacity: 1; 
+}
+
+/* ===============================
+   ADMIN: TOP CENTER BADGE (AUTO HIDE)
+   =============================== */
+
+.depo-badge-top{
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100000;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .2px;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.22);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.55);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  /* animasi halus */
+  opacity: 1;
+  transition: opacity .35s ease, transform .35s ease;
+}
+
+.depo-badge-top.hide{
+  opacity: 0;
+  transform: translateX(-50%) translateY(-6px);
+  pointer-events: none;
+}
+
+.depo-badge-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: #22c55e; /* hijau */
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.25);
+  display: inline-block;
+}
+
+/* ===============================
+   ADMIN DASHBOARD – HEADER SPACING FIX
+   =============================== */
+
+/* kecilkan jarak bawah title admin */
+section.main h1 {
+  margin-bottom: 0.2rem !important;
+}
+
+/* kecilkan padding atas container utama */
+section.main .block-container {
+  padding-top: 1.4rem !important;
+}
+
+/* divider lebih rapat */
+section.main hr {
+  margin-top: 0.4rem !important;
+  margin-bottom: 0.4rem !important;
+}
+
+/* ===============================
+   USER HEADER: SINGLE BOX
+   =============================== */
+
+/* JIKA ADA SISA CLASS LAMA, MATIKAN (biar tidak muncul border kosong) */
+.depo-user-header,
+.user-header-wrap,
+.user-header-card {
+  display: none !important;
+}
+
+.user-header-box{
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+
+  background: var(--secondary-background-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 18px;
+
+  /* ⬇⬇⬇ INI KUNCI UTAMA */
+  padding: 12px 18px;
+  margin-bottom: 1px !important;  /* sebelumnya besar */
+}
+
+/* Rapatkan divider dengan header */
+hr {
+  margin-top: 1px !important;
+  margin-bottom: 1px !important;
+}
+
+/* Hilangkan spacer kosong sebelum divider */
+div:has(> hr) {
+  margin-top: 0 !important;
+}
+
+/* teks kiri */
+.user-header-left{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.user-name{
+  font-size:16px;
+  font-weight:800;
+}
+
+.user-address{
+  font-size:13px;
+  opacity:0.85;
+}
+
+/* tombol logout */
+.user-header-box div.stButton > button {
+  height: 42px;
+  border-radius: 14px;
+  font-weight: 800;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+.user-header-box div.stButton > button:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+/* ratakan konten kolom kanan (logout) ke tengah vertikal */
+.user-header-box [data-testid="column"]:last-child {
+  display: flex;
+  align-items: center;
+}
+
+/* ===============================
+   RAPATKAN JARAK HEADER → TITLE
+   =============================== */
+
+/* Kurangi jarak atas title (st.title) */
+h1 {
+  margin-top: 0.2rem !important;
+  margin-bottom: 0.6rem !important;
+}
+
+/* Jika pakai subheader di bawahnya */
+h2, h3 {
+  margin-top: 0.2rem !important;
+}
+
+/* ==================================================
+   SUPER RAPAT: HR -> TITLE (NEMPEL 0px)
+   ================================================== */
+
+/* Divider benar-benar tanpa jarak */
+/* ==================================================
+   RAPAT ELEGAN: HEADER → TITLE (SEDIKIT JARAK)
+   ================================================== */
+
+/* Divider */
+section.main hr{
+  margin-top: 4px !important;
+  margin-bottom: 6px !important;
+}
+
+/* Title utama (🛒 Halo, ...) */
+section.main h1{
+  margin-top: 4px !important;      /* ⬅️ ini kunci jarak */
+  margin-bottom: 10px !important;
+  padding-top: 0 !important;
+}
+
+/* Wrapper sebelum h1 (Streamlit vertical block) */
+section.main div:has(> h1){
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Jangan terlalu mematikan gap global */
+section.main div[data-testid="stVerticalBlock"]{
+  gap: 6px !important;  /* sebelumnya 0, ini bikin lebih manusiawi */
+}
+
+/* ==================================================
+   ADMIN DASHBOARD ONLY: RAPAT ELEGAN (HR -> TITLE)
+   Sama persis seperti user_order, tapi scoped
+   ================================================== */
+
+/* Divider */
+.page-admin-dashboard section.main hr{
+  margin-top: 4px !important;
+  margin-bottom: 6px !important;
+}
+
+/* Title utama (Dashboard Admin Depo 78) */
+.page-admin-dashboard section.main h1{
+  margin-top: 4px !important;      /* ⬅️ kunci jarak */
+  margin-bottom: 10px !important;
+  padding-top: 0 !important;
+}
+
+/* Wrapper sebelum h1 */
+.page-admin-dashboard section.main div:has(> h1){
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Gap antar block di admin (lebih rapat, tetap manusiawi) */
+.page-admin-dashboard section.main div[data-testid="stVerticalBlock"]{
+  gap: 6px !important;
+}
+
+/* ===============================
+   BERANDA: ACTIVE ORDER MINI CARDS
+   =============================== */
+
+.beranda-active-cards{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Card ringkas */
+.order-mini-card{
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.20);
+}
+
+.omc-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.omc-queue{
+  font-weight: 800;
+  font-size: 14px;
+  opacity: 0.95;
+}
+.omc-queue span{
+  font-weight: 900;
+}
+
+.omc-badge{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.22);
+  white-space: nowrap;
+}
+
+/* badge variants (aman, tidak wajib perfect) */
+.badge-wait{  box-shadow: 0 0 0 3px rgba(234,179,8,0.16); }
+.badge-proc{  box-shadow: 0 0 0 3px rgba(59,130,246,0.16); }
+.badge-ship{  box-shadow: 0 0 0 3px rgba(168,85,247,0.16); }
+.badge-done{  box-shadow: 0 0 0 3px rgba(34,197,94,0.16); }
+.badge-cancel{box-shadow: 0 0 0 3px rgba(239,68,68,0.16); }
+.badge-default{ box-shadow: 0 0 0 3px rgba(148,163,184,0.14); }
+
+.omc-mid{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+}
+
+.omc-date{
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.omc-total{
+  font-size: 14px;
+  font-weight: 900;
+}
+
+/* Detail dropdown */
+.order-mini-detail{
+  margin-bottom: 8px;
+  opacity: 0.95;
+}
+
+.order-mini-items-title{
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.order-mini-item-row{
+  display:flex;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.order-mini-gap{
+  height: 2px;
+}
+
+/* =================================================
+   TOP NAV — FIX SIZE & VERTICAL POSITION (FINAL)
+   ================================================= */
+
+/* Wrapper: rapat ke atas & bawah */
+.top-nav-wrap{
+  margin-top: 4px !important;
+  margin-bottom: 6px !important;
+  padding: 4px 0 !important;
+
+  border: none !important;
+  background: transparent !important;
+}
+
+/* Radiogroup container */
+.top-nav-wrap div[role="radiogroup"]{
+  display: flex !important;
+  align-items: center !important;
+  gap: 18px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* ===============================
+   RADIO ITEM (LABEL UTAMA)
+   =============================== */
+.top-nav-wrap label{
+  margin: 0 !important;
+  padding: 12px 22px !important;
+
+  border-radius: 999px !important;
+  border: none !important;
+
+  background: rgba(255,255,255,0.06) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* ===============================
+   TEKS NAV (PASTI BESAR)
+   =============================== */
+.top-nav-wrap label p,
+.top-nav-wrap label span{
+  font-size: 20px !important;   /* ⬅️ TEKS BESAR */
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+}
+
+/* ===============================
+   ICON (EMOJI) — LEBIH BESAR
+   =============================== */
+.top-nav-wrap label span{
+  font-size: 24px !important;   /* ⬅️ ICON BESAR */
+  margin-right: 8px !important;
+}
+
+/* ===============================
+   STATE AKTIF
+   =============================== */
+.top-nav-wrap
+div[role="radio"][aria-checked="true"]{
+  background: rgba(255,255,255,0.16) !important;
+}
+
+/* Hover */
+.top-nav-wrap label:hover{
+  background: rgba(255,255,255,0.12) !important;
+}
+
+/* =========================================
+   HILANGKAN SIDEBAR BAWAAN STREAMLIT (MULTIPAGE)
+   ========================================= */
+
+/* 1) Hilangkan daftar navigasi pages (app/login/...) */
+[data-testid="stSidebarNav"]{
+  display: none !important;
+}
+
+/* 2) Hilangkan tombol hamburger / collapsed control */
+div[data-testid="collapsedControl"]{
+  display: none !important;
+}
+
+/* 3) Hilangkan tombol close (X) sidebar pada mode drawer */
+button[aria-label="Close sidebar"],
+button[title="Close sidebar"]{
+  display: none !important;
+}
+
+/* 4) (Opsional) kalau kamu mau sidebar-nya benar2 tidak ada */
+section[data-testid="stSidebar"]{
+  display: none !important;
+}
+
+/* 5) Pastikan konten utama full */
+section.main{
+  margin-left: 0 !important;
+}
+/* =====================================================
+   HILANGKAN SEMUA UI BAWAAN STREAMLIT
+   - Sidebar multipage
+   - Header atas (Deploy, ⋮, garis warna)
+   - Hamburger / close button
+   ===================================================== */
+
+/* =========================
+   1. HILANGKAN HEADER ATAS
+   ========================= */
+header[data-testid="stHeader"]{
+  display: none !important;
+}
+
+/* garis warna tipis di paling atas */
+div[data-testid="stDecoration"]{
+  display: none !important;
+}
+
+/* =========================
+   2. HILANGKAN SIDEBAR BAWAAN
+   ========================= */
+section[data-testid="stSidebar"]{
+  display: none !important;
+}
+
+/* daftar page (app/login/...) */
+[data-testid="stSidebarNav"]{
+  display: none !important;
+}
+
+/* =========================
+   3. HILANGKAN KONTROL SIDEBAR
+   ========================= */
+div[data-testid="collapsedControl"]{
+  display: none !important;
+}
+
+button[aria-label="Close sidebar"],
+button[title="Close sidebar"]{
+  display: none !important;
+}
+
+/* =========================
+   4. FULL WIDTH MAIN CONTENT
+   ========================= */
+section.main{
+  margin-left: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* container utama */
+div[data-testid="stAppViewContainer"]{
+  padding-top: 0 !important;
+}

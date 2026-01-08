@@ -1,0 +1,33 @@
+﻿kategori,varian,nama,harga,aliases,satuan,isi,brand
+"galon,19l,Galon Amidis 19L,22000,""amidis galon 19l|galon amidis 19l|amidis galon 19|galon amidis 19|amidis 19lt|amidis 19liter|amdis 19l|amd galon 19l|amds galon 19|amidis 19 l|amidis g19|amidis galon besar 19l|amidis galon|galon amidis"",galon,,amidis"
+"galon,19l,Galon Vit 19L,18000,""vit galon 19l|galon vit 19l|vit galon 19|galon vit 19|vit 19lt|vit 19liter|vit 19 l|vt galon 19l|vitt 19l|vit g19|vit galon besar 19l|vit galon|galon vit"",galon,,vit"
+"galon,19l,Galon Aqua 19L,22000,""aqua galon 19l|galon aqua 19l|aqua galon 19|galon aqua 19|aqua 19lt|aqua 19liter|aq galon 19l|akua galon 19l|aqua 19 l|aqua galon besar 19l|aq 19l|aq g19|aqua refill 19l|aqua galon|galon aqua"",galon,,aqua"
+"galon,19l,Galon Cleo 19L,23000,""cleo galon 19l|galon cleo 19l|cleo galon 19|galon cleo 19|cleo 19lt|cleo 19liter|clo galon 19l|cleo 19 l|cleo g19|cleo galon besar 19l|cleo galon|galon cleo"",galon,,cleo"
+"galon,15l,Galon Le Minerale 15L,21000,""le minerale galon 15l|galon le minerale 15l|le minerale galon 15|galon le minerale 15|lem galon 15l|lemi galon 15l|le minerale 15 lt|le minerale 15liter|lem 15l|le minerale galon|galon le minerale|lemineral galon|lemi galon|lem galon"",galon,,le minerale"
+"galon,19l,Galon Oasis 19L,18000,""oasis galon 19l|galon oasis 19l|oasis galon 19|galon oasis 19|osis 19l|oasis 19lt|oasis 19liter|oasis 19 l|oasis g19|oasis galon besar 19l|oasis galon|galon oasis"",galon,,oasis"
+"galon,19l,Galon Pristine 19L,22000,""pristine galon 19l|galon pristine 19l|pristine galon 19|galon pristine 19|prstn 19l|prstin 19lt|pristine 19 liter|pristine 19 l|pristine g19|pristine galon besar 19l|pristine galon|galon pristine"",galon,,pristine"
+
+"botol,1.5l,Aqua Botol 1.5L,64000,""aqua botol 1.5l|aqua botol 1500ml|aqua botol 1500|botol aqua 1.5l|botol aqua 1500ml|botol aqua 1500|aqua besar 1.5l|aqua 1500|aq 1.5l|akua 1.5l|aqua 1.5 lt|aq 1500ml|aq botol 1.5"",dus,12 botol,aqua"
+"botol,1.5l,Pristine Botol 1.5L,83000,""pristine botol 1.5l|pristine botol 1500ml|pristine botol 1500|botol pristine 1.5l|botol pristine 1500ml|prstn 1.5l|pristin 1500|pristine besar 1.5l|pristine 1.5 lt|pristine 1500ml|pristin 1.5l|pristin 1500ml|pristin 1500|pristin botol 1.5l|pristin botol besar"",dus,12 botol,pristine"
+"botol,1.5l,Vit Botol 1.5L,43000,""vit botol 1.5l|vit botol 1500ml|vit botol 1500|botol vit 1.5l|vt 1.5l|vitt 1500|vit 1.5 lt|vit 1500ml|vit besar 1.5l|vit besarl"",dus,12 botol,vit"
+"botol,1.5l,Le Minerale Botol 1.5L,64000,""le minerale botol 1.5l|le minerale botol 1500ml|le minerale botol 1500|botol le minerale 1.5l|lem 1.5l|lemi 1.5l|le minerale besar 1.5l|lmnrle 1.5l|leminerale 1500ml"",dus,12 botol,le minerale"
+"botol,1.5l,Nestle Botol 1.5L,60000,""nestle botol 1.5l|nestle botol 1500ml|nestle botol 1500|botol nestle 1.5l|nes 1500|nestl 1500ml|nestle besar 1.5l|nestle 1.5 lt|pure life 1.5l|pure life 1500ml|pure life 1500|purelife 1.5l|purelife 1500ml|purelife 1500|pure lipe 1.5l|pure lipe 1500ml|purelyf 1500|purelife botol 1.5l|pure life botol 1.5l"",dus,12 botol,nestle"
+
+"botol,600ml,Aqua Botol 600ml,56000,""aqua 600|aqua botol 600ml|aqua botol 600|botol aqua 600ml|botol aqua 600|aq 600ml|aq botol 600|akua 600ml|aqua 600 ml|aqua 600m|aqua 600mil"",dus,24 botol,aqua"
+"botol,600ml,Pristine Botol 600ml,88000,""pristine botol 600ml|pristine botol 600|botol pristine 600ml|prstin 600ml|pristine 600 ml|pristine kecil 600|pristine 600m|prstn 600ml|pristin 600ml|pristin 600|pristin botol 600ml"",dus,24 botol,pristine"
+"botol,500ml,Vit Botol 500ml,42000,""vit botol 500ml|vit botol 500|botol vit 500ml|vt 500ml|vitt 500|vit kecil 500|vit 500 ml|vit 500m|vit 550ml"",dus,24 botol,vit"
+"botol,600ml,Nestle Botol 600ml,55000,""nestle botol 600ml|nestle botol 600|botol nestle 600ml|nes 600ml|nestle 600 ml|nestle kecil 600|nestle 600m|pure life 600ml|pure life 600|purelife 600ml|purelife 600|pure lipe 600ml|pure lipe 600|purelyf 600|purelife botol 600ml|pure life botol 600ml"",dus,24 botol,nestle"
+"botol,600ml,Le Minerale Botol 600ml,56000,""le minerale botol 600ml|le minerale botol 600|botol le minerale 600ml|lem 600ml|lemi 600|le minerale kecil 600|le minerale 600m"",dus,24 botol,le minerale"
+
+"botol,330ml,Aqua Botol 330ml,46000,""aqua botol 330ml|aqua botol 330|aq 330ml|botol aqua 330ml|aqua mini 330|aqua kecil 330|aqua 330 ml|aqua 330m"",dus,24 botol,aqua"
+"botol,330ml,Le Minerale Botol 330ml,48000,""le minerale botol 330ml|le minerale botol 330|lem 330ml|lemi 330|le minerale kecil 330|lmnrle 330"",dus,24 botol,le minerale"
+"botol,330ml,Nestle Botol 330ml,45000,""nestle botol 330ml|nestle botol 330|botol nestle 330ml|nestle kecil 330|nes 330ml|nestle 330m|pure life 330ml|pure life 330|purelife 330ml|purelife 330|pure lipe 330ml|pure lipe 330|purelyf 330|purelife botol 330ml|pure life botol 330ml"",dus,24 botol,nestle"
+
+"botol,400ml,Pristine Botol 400ml,66000,""pristine botol 400ml|pristine botol 400|prstin 400ml|pristine 400 ml|botol pristine 400ml|pristine kecil 400|pristin 400ml|pristin 400|pristin botol 400ml"",dus,24 botol,pristine"
+
+"cup,240ml,Aqua Cup 240ml,40000,""aqua cup 240ml|aqua cup 240|aqua gelas 240ml|aqua gelas 240|gelas aqua 240ml|aqua 240 ml|aqua cup 240m"",dus,48 cup,aqua"
+"cup,240ml,Oasis Cup 240ml,23000,""oasis cup 240ml|oasis cup 240|oasis gelas 240ml|gelas oasis 240|oasis 240 ml|oasis cup 240m"",dus,48 cup,oasis"
+
+"gas,12kg,Gas LPG 12 Kg,210000,""gas lpg 12kg|lpg 12kg|gas elpiji 12kg|lpj 12kg|gas 12 kilo|gas 12 kg|tabung gas 12|tabung lpg 12|gas 12k|gas besar"",tabung,1 tabung,lpg"
+"gas,5.5kg,Gas Bright Gas 5.5 Kg,100000,""bright gas 5.5kg|bright gas 5.5|bright 5.5kg|gas 5.5kg pink|gas lima setengah|bg 5.5kg|bright gas 55|tabung bright gas 5.5"",tabung,1 tabung,lpg"
+"gas,3kg,Gas LPG 3 Kg,24000,""gas lpg 3kg|lpg 3kg|gas elpiji 3kg|elpiji 3kg|lpg3|gas3kg|gas tiga kilo|gas 3 kilo|tabung gas 3kg|tabung lpg 3kg"",tabung,1 tabung,lpg"

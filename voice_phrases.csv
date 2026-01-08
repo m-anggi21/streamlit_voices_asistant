@@ -1,0 +1,72 @@
+﻿key,text,lang,note
+welcome,Selamat datang di Toko Depo 78. Silakan melakukan pemesanan.,id,Sambutan awal
+
+welcome_user,Halo {nama}. Silakan berbelanja.,id,Sambutan awal user order (pakai nama)
+
+listen_prompt,Silakan bicara. Saya sedang mendengarkan.,id,Prompt mendengar
+
+after_summary_prompt,Jika ada perintah tambahan, silakan ucapkan. Jika ingin membayar, ucapkan bayar. Jika selesai semua, ucapkan cukup.,id
+
+no_hear,Maaf, saya tidak menangkap suara Anda Mohon ulangi.,id,Tidak terdengar
+
+choice,Silakan pilih nomor opsi yang Anda inginkan, atau sebutkan merk/nama produk.,id,pilihan
+
+not_understood,Saya belum memahami maksud Anda. Mohon jelaskan kembali.,id,Tidak mengerti
+
+repeat,Mohon diulang lagi ya.,id,Permintaan mengulang
+
+yes,Ya, baik.,id,Jawaban afirmatif
+
+no,Tidak.,id,Jawaban negatif
+
+continue,Lanjut, silakan.,id,Melanjutkan proses
+
+cancel,Baik, saya batalkan.,id,Membatalkan tindakan
+
+exit,Program akan ditutup, terima kasih.,id,Menutup aplikasi
+
+help,Anda dapat mengatakan seperti: 'beli aqua galon' atau 'lihat keranjang'.,id,Bantuan umum
+
+item_added,Item {name} sejumlah {qty} berhasil ditambahkan ke keranjang.,id,konfirmasi tambah item
+
+cart_empty,Keranjang masih kosong. Silakan lakukan pemesanan.,id,Keranjang kosong
+
+show_cart,Berikut adalah isi keranjang Anda:,id,Menampilkan keranjang
+
+clear_cart,Keranjang telah dikosongkan.,id,Menghapus semua isi keranjang
+
+total_summary,Total pesanan Anda saat ini adalah Rp{total:,}.,id,Total belanja
+
+option_prompt,Terdapat beberapa pilihan produk. Silakan pilih nomor atau sebutkan nama.,id,Opsi produk
+
+ask_qty,Berapa jumlah yang Anda inginkan untuk produk {name}?,id,Tanya jumlah
+
+ask_category,Produk apa yang Anda maksud? Contoh: Aqua galon.,id,Tanya kategori
+
+invalid_choice,Pilihan tidak valid. Silakan coba lagi.,id,Salah input opsi
+
+confirm_selection,Anda memilih {name} sebanyak {qty},id,Konfirmasi pilihan
+
+auto_selected,Saya memilih produk yang paling sesuai yaitu {name}.,id,Pemilihan otomatis
+
+out_of_stock,Maaf {name} sedang kosong.,id,Stok habis
+
+ask_confirm_order,Apakah Anda ingin melanjutkan ke pembayaran?,id,Konfirmasi checkout
+
+order_processing,Pesanan sedang diproses.,id,Proses pesanan
+
+order_cancelled,Pesanan telah dibatalkan.,id,Batal order
+
+order_next,Jika Anda sudah selesai melakukan pesanan, ucapkan cukup. Jika masih ada pesanan lain, silakan lanjutkan.,id,lanjut order
+
+order_summary,Berikut pesanan Anda.,id,konfirmasi pesanan
+
+confirm_more,Katakan Tidak Jika Tidak Ada Tambahan.,id,konfirmasi ulang
+
+item_added_final,Item telah dimasukkan ke keranjang.,id,keranjang akhir
+
+continue_order,Silakan lanjutkan pesanan Anda.,id,lanjut pesanan
+
+payment_method,Sebutkan metode pembayaran: tunai atau transfer.,id,Tanya pembayaran
+
+payment_received,Pembayaran diterima terima kasih!,id,Pembayaran sukses
