@@ -59,10 +59,28 @@ with col_logout:
 st.divider()
 
 # ============================
-# REALTIME AUTO-REFRESH
+# REALTIME AUTO-REFRESH (lebih stabil di Streamlit Cloud)
 # ============================
-st_autorefresh(interval=3000, key="admin_autorefresh")
+colA, colB = st.columns([1.6, 6])
+with colA:
+    auto_refresh_on = st.toggle(
+        "Auto refresh",
+        value=st.session_state.get("admin_auto_refresh_on", True),
+        key="admin_auto_refresh_on",
+    )
+with colB:
+    refresh_sec = st.slider(
+        "Interval (detik)",
+        min_value=10,
+        max_value=60,
+        value=int(st.session_state.get("admin_refresh_sec", 15)),
+        step=5,
+        key="admin_refresh_sec",
+        disabled=not auto_refresh_on,
+    )
 
+if auto_refresh_on:
+    st_autorefresh(interval=refresh_sec * 1000, key="admin_autorefresh")
 
 # ============================
 # HELPER: PARSE DATETIME
