@@ -179,7 +179,11 @@ with f1:
     )
 
 with f2:
-    show_all_dates = st.checkbox("Tampilkan semua", value=False, key="admin_show_all_dates")
+    show_all_dates = st.checkbox(
+        "Tampilkan semua",
+        value=st.session_state.get("admin_show_all_dates", True),  # ✅ default: tampilkan semua
+        key="admin_show_all_dates"
+    )
 
 with f3:
     if show_all_dates:
@@ -208,18 +212,18 @@ with c1:
     sort_by = st.selectbox(
         "Urutkan berdasarkan:",
         ["Waktu Pemesanan", "Nama Customer", "Nomor Order"],
+        index=0,
         key="admin_sort_by"
     )
 
 with c2:
     sort_dir = st.selectbox(
         "Arah:",
-        ["Terbaru → Terlama", "Terlama → Terbaru"] if sort_by == "Waktu Pemesanan"
-        else ["A → Z", "Z → A"] if sort_by == "Nama Customer"
-        else ["Kecil → Besar", "Besar → Kecil"],
+        ["Terbaru → Terlama", "Terlama → Terbaru"],
+        index=0,
         key="admin_sort_dir"
     )
-
+    
 if sort_by == "Waktu Pemesanan":
     reverse = (sort_dir == "Terbaru → Terlama")
     orders = sorted(orders, key=lambda o: _parse_dt(o.get("created_at")), reverse=reverse)
