@@ -1093,14 +1093,6 @@ else:
 
     with col1:
         st.button(
-            "🗑 Bersihkan Keranjang",
-            key="btn_clear_cart",
-            on_click=clear_cart_full,   # ✅ pakai callback lengkap
-            use_container_width=True
-        )
-
-    with col2:
-        st.button(
             "✔ Selesai & Bayar",
             key="btn_checkout",
             on_click=checkout_callback,  # ✅ aktifkan checkout view
@@ -1108,6 +1100,15 @@ else:
                     or bool(st.session_state.get("cart_locked"))
                     or bool(st.session_state.get("order_submitted"))
                     or bool(st.session_state.get("payment_in_progress")),
+            use_container_width=True
+        )
+        
+
+    with col2:
+        st.button(
+            "🗑 Bersihkan Keranjang",
+            key="btn_clear_cart",
+            on_click=clear_cart_full,   # ✅ pakai callback lengkap
             use_container_width=True
         )
 
