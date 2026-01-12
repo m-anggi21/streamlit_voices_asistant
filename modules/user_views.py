@@ -99,7 +99,7 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
     # )
     # st.markdown("</div>", unsafe_allow_html=True)
     # st.write("---")
-    return picked
+    # return picked
 
 # =========================
 # UI: BERANDA
