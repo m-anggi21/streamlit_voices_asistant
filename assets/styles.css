@@ -771,6 +771,53 @@ div[data-testid="stAppViewContainer"]{
 .top-nav-wrap [role="radio"]:hover{
   background: rgba(255,255,255,0.12) !important;
 }
+
+/* ================================
+   TOP NAV — STREAMLIT SHARE FIX
+   Target BaseWeb Radio (lebih stabil)
+   ================================ */
+
+.top-nav-wrap [role="radiogroup"]{
+  display: flex !important;
+  gap: 18px !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 1) sembunyikan bulatan radio (svg / circle) */
+.top-nav-wrap [data-baseweb="radio"] svg{
+  display: none !important;
+}
+.top-nav-wrap [data-baseweb="radio"] > div:first-child{
+  display: none !important;
+}
+
+/* 2) jadikan itemnya pill */
+.top-nav-wrap [data-baseweb="radio"]{
+  margin: 0 !important;
+  padding: 12px 22px !important;
+  border-radius: 999px !important;
+  border: none !important;
+  background: rgba(255,255,255,0.06) !important;
+
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 3) teks besar */
+.top-nav-wrap [data-baseweb="radio"] *{
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  line-height: 1.1 !important;
+}
+
+/* 4) aktif */
+.top-nav-wrap [data-baseweb="radio"]:has(input:checked){
+  background: rgba(255,255,255,0.16) !important;
+}
+
 /* DEBUG: kalau ini tidak kelihatan, berarti CSS assets/styles.css tidak keload */
 .top-nav-wrap{
   outline: 3px solid red !important;
