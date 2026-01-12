@@ -132,29 +132,45 @@ CURRENT_LANG = "id"
 FALLBACK_LANG = "id"
 
 
-import csv, os
+def load_voice_phrases(path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"[ERROR] file voice_phrases.csv tidak ditemukan: {path}")
 
-def load_voice_phrases(csv_path: str) -> dict:
     phrases = {}
-    if not os.path.exists(csv_path):
-        return phrases
 
-    # ✅ utf-8-sig = buang BOM "﻿" otomatis
-    with open(csv_path, "r", encoding="utf-8-sig", newline="") as f:
+    # FIX UTF-8 BOM: gunakan encoding utf-8-sig agar BOM otomatis dihapus
+    with open(path, encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
-        for row in reader:
-            key = (row.get("key") or "").strip()
-            lang = (row.get("lang") or "").strip()
-            text = (row.get("text") or "").strip()
 
-            if key and lang and text:
-                phrases.setdefault(lang, {})[key] = text
+        # Normalisasi nama kolom → hilangkan spasi & BOM
+        fieldnames_norm = [c.strip().lower() for c in reader.fieldnames]
+        normalized_map = dict(zip(fieldnames_norm, reader.fieldnames))
+
+        if "key" not in fieldnames_norm or "text" not in fieldnames_norm:
+            raise KeyError(
+                f"voice_phrases.csv wajib punya kolom ['key','text'].\n"
+                f"Kolom ditemukan: {reader.fieldnames}"
+            )
+
+        lang_available = "lang" in fieldnames_norm
+
+        for row in reader:
+            key_raw = row[normalized_map["key"]]
+            text_raw = row[normalized_map["text"]]
+
+            key = key_raw.strip().lower()
+            text = text_raw.strip()
+
+            if lang_available:
+                lang_raw = row[normalized_map["lang"]]
+                lang = lang_raw.strip().lower()
+            else:
+                lang = "id"
+
+            phrases[(key, lang)] = text
 
     return phrases
-st.write("CSV exists?", os.path.exists(csv_path))
-st.write("CSV path:", csv_path)
-st.write("Loaded keys (id):", list(phrases.get("id", {}).keys())[:30])
-st.write("Has item_added?", "item_added" in phrases.get("id", {}))
+
 
 def init_voice_phrases_or_exit(path="voice_phrases.csv"):
     global VOICE_PHRASES
