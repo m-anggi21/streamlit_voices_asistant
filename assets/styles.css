@@ -707,3 +707,19 @@ section.main{
 div[data-testid="stAppViewContainer"]{
   padding-top: 0 !important;
 }
+
+/* garis custom: pasti rapat di local & cloud */
+.top-nav-area{ margin:0 !important; padding:0 !important; }
+.top-nav-area .nav-hr{
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+  margin: 6px 0;     /* atur rapatnya di sini */
+  padding: 0;
+}
+
+/* pastikan container radio tidak nambah jarak */
+.top-nav-area [data-testid="stRadio"],
+.top-nav-area .element-container{
+  margin: 0 !important;
+  padding: 0 !important;
+}
