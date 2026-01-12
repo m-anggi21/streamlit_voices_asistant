@@ -78,7 +78,7 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
     )
     st.markdown("</div>", unsafe_allow_html=True)
     
-    return picked
+    
     st.write("---")
     # pastikan value valid
     if nav_key not in st.session_state:
@@ -88,7 +88,7 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
 
     def _fmt(x: str) -> str:
         return f"{icons.get(x, '•')} {x}"
-        
+    return picked 
     
 
 # =========================
