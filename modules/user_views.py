@@ -76,18 +76,22 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
     def _fmt(x: str) -> str:
         return f"{icons.get(x, '•')} {x}"
 
-    st.markdown('<div class="top-nav-wrap">', unsafe_allow_html=True)
-    picked = st.radio(
-        "Navigasi",
-        options=options,
-        key=nav_key,
+    st.markdown('<div class="top-nav-area">', unsafe_allow_html=True)
+
+    st.markdown('---')  # garis atas
+    
+    nav = st.radio(
+        " ",
+        ["Beranda", "Order", "History"],
         horizontal=True,
         label_visibility="collapsed",
-        format_func=_fmt,
+        key="top_nav"
     )
-    st.markdown("</div>", unsafe_allow_html=True)
-    st.write("---")
-    return picked
+    
+    st.markdown('---')  # garis bawah
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
 
 # =========================
 # UI: BERANDA
