@@ -67,16 +67,6 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
 
     options = ["Beranda", "Order", "History"]
     icons = {"Beranda": "🏠", "Order": "🛒", "History": "🧾"}
-    st.write("---")
-    # pastikan value valid
-    if nav_key not in st.session_state:
-        st.session_state[nav_key] = default_nav
-    if st.session_state[nav_key] not in options:
-        st.session_state[nav_key] = default_nav
-
-    def _fmt(x: str) -> str:
-        return f"{icons.get(x, '•')} {x}"
-        
     st.markdown('<div class="top-nav-wrap">', unsafe_allow_html=True)
     picked = st.radio(
         "Navigasi",
@@ -89,6 +79,17 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
     st.markdown("</div>", unsafe_allow_html=True)
     
     return picked
+    st.write("---")
+    # pastikan value valid
+    if nav_key not in st.session_state:
+        st.session_state[nav_key] = default_nav
+    if st.session_state[nav_key] not in options:
+        st.session_state[nav_key] = default_nav
+
+    def _fmt(x: str) -> str:
+        return f"{icons.get(x, '•')} {x}"
+        
+    
 
 # =========================
 # UI: BERANDA
