@@ -64,9 +64,10 @@ def fetch_order_items(get_order_items_func, orders_id: int) -> List[Dict[str, An
 
 def render_top_nav(default_nav="Order", key_prefix="user_order"):
     nav_key = f"{key_prefix}_nav"
-    st.write("---")
+    
     options = ["Beranda", "Order", "History"]
     icons = {"Beranda": "🏠", "Order": "🛒", "History": "🧾"}
+    st.write("---")
     # pastikan value valid
     if nav_key not in st.session_state:
         st.session_state[nav_key] = default_nav
