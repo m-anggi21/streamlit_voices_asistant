@@ -78,20 +78,13 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
 
     st.markdown('<div class="top-nav-area">', unsafe_allow_html=True)
 
-    st.markdown('---')  # garis atas
-    
-    nav = st.radio(
-        " ",
-        ["Beranda", "Order", "History"],
-        horizontal=True,
-        label_visibility="collapsed",
-        key="top_nav"
-    )
-    
-    st.markdown('---')  # garis bawah
+    st.markdown('---')
+    st.markdown('<div class="top-nav-wrap">', unsafe_allow_html=True)
+    nav = st.radio(" ", ["Beranda","Order","History"], horizontal=True, label_visibility="collapsed", key="top_nav")
+    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('---')
     
     st.markdown('</div>', unsafe_allow_html=True)
-
 
 # =========================
 # UI: BERANDA
