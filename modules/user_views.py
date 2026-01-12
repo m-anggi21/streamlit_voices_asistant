@@ -62,7 +62,7 @@ def fetch_order_items(get_order_items_func, orders_id: int) -> List[Dict[str, An
     except Exception:
         return []
 
-ef render_top_nav(default_nav="Order", key_prefix="user_order"):
+def render_top_nav(default_nav="Order", key_prefix="user_order"):
     nav_key = f"{key_prefix}_nav"
     st.write("---")
     options = ["Beranda", "Order", "History"]
