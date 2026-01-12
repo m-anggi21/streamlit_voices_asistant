@@ -771,3 +771,7 @@ div[data-testid="stAppViewContainer"]{
 .top-nav-wrap [role="radio"]:hover{
   background: rgba(255,255,255,0.12) !important;
 }
+/* DEBUG: kalau ini tidak kelihatan, berarti CSS assets/styles.css tidak keload */
+.top-nav-wrap{
+  outline: 3px solid red !important;
+}
