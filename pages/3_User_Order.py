@@ -213,7 +213,7 @@ if st.session_state.get("order_submitted") and st.session_state.get("submitted_o
     so = st.session_state.submitted_order
     st.write("---")
     st.subheader("✅ Pembayaran Berhasil")
-    st.success("Pesanan Anda sudah diproses. Walau aplikasi rerun, order tidak akan dibuat ulang.")
+    st.success("Pesanan Anda sudah diproses.")
     if so.get("nomor_antrian"):
         st.info(f"Nomor Antrian: **{so['nomor_antrian']}**")
     if so.get("order_id"):
