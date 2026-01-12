@@ -67,6 +67,7 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
 
     options = ["Beranda", "Order", "History"]
     icons = {"Beranda": "🏠", "Order": "🛒", "History": "🧾"}
+    st.write("---")
     # pastikan value valid
     if nav_key not in st.session_state:
         st.session_state[nav_key] = default_nav
@@ -86,7 +87,7 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
         format_func=_fmt,
     )
     st.markdown("</div>", unsafe_allow_html=True)
-    st.write("---")
+    
     return picked
 
 # =========================
