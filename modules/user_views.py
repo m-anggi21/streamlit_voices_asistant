@@ -62,11 +62,20 @@ def fetch_order_items(get_order_items_func, orders_id: int) -> List[Dict[str, An
     except Exception:
         return []
 
-def render_top_nav(default_nav="Order", key_prefix="user_order"):
+ef render_top_nav(default_nav="Order", key_prefix="user_order"):
     nav_key = f"{key_prefix}_nav"
-
+    st.write("---")
     options = ["Beranda", "Order", "History"]
     icons = {"Beranda": "🏠", "Order": "🛒", "History": "🧾"}
+    # pastikan value valid
+    if nav_key not in st.session_state:
+        st.session_state[nav_key] = default_nav
+    if st.session_state[nav_key] not in options:
+        st.session_state[nav_key] = default_nav
+
+    def _fmt(x: str) -> str:
+        return f"{icons.get(x, '•')} {x}"
+
     st.markdown('<div class="top-nav-wrap">', unsafe_allow_html=True)
     picked = st.radio(
         "Navigasi",
@@ -77,19 +86,8 @@ def render_top_nav(default_nav="Order", key_prefix="user_order"):
         format_func=_fmt,
     )
     st.markdown("</div>", unsafe_allow_html=True)
-    
-    
     st.write("---")
-    # pastikan value valid
-    if nav_key not in st.session_state:
-        st.session_state[nav_key] = default_nav
-    if st.session_state[nav_key] not in options:
-        st.session_state[nav_key] = default_nav
-
-    def _fmt(x: str) -> str:
-        return f"{icons.get(x, '•')} {x}"
-    return picked 
-    
+    return picked
 
 # =========================
 # UI: BERANDA
