@@ -445,39 +445,31 @@ if st.session_state.get("checkout_ready") and not st.session_state.get("order_su
     st.stop()
 
 # ============================================================
-#   GUARD: JANGAN TAMPILKAN MODE INPUT SAAT KONFIRMASI PILIHAN
+#   INPUT MODE (Dropdown / List) - default Voice
 # ============================================================
-is_choosing = bool(st.session_state.get("pending_choice")) \
-              or bool(st.session_state.get("pending_action"))
-# ============================================================
-#   INPUT MODE (Dropdown / List)
-#   ❌ DISABLED saat sedang konfirmasi pilihan
-# ============================================================
-if not is_choosing:
+st.session_state.setdefault("input_mode", "Voice")
 
-    st.session_state.setdefault("input_mode", "Voice")
+st.markdown("<div class='mode-label'>Mode Input:</div>", unsafe_allow_html=True)
 
-    st.markdown("<div class='mode-label'>Mode Input:</div>", unsafe_allow_html=True)
+mode = st.selectbox(
+    label="Pilih mode input",   # ✅ label tidak boleh kosong
+    options=["Voice", "Text"],
+    index=0 if st.session_state.input_mode == "Voice" else 1,
+    key="input_mode_select",
+    label_visibility="collapsed"  # ✅ label disembunyikan tapi tetap ada
+)
 
-    mode = st.selectbox(
-        label="Pilih mode input",
-        options=["Voice", "Text"],
-        index=0 if st.session_state.input_mode == "Voice" else 1,
-        key="input_mode_select",
-        label_visibility="collapsed"
-    )
+st.session_state.input_mode = mode
 
-    st.session_state.input_mode = mode
+text = ""
+trigger = False
 
-    text = ""
-    trigger = False
-
-    if mode == "Text":
-        text = st.text_input("Ketikkan perintah:")
-        trigger = st.button("Proses")
-    else:
-        system_box.info("Silakan bicara. Rekaman otomatis siap digunakan.")
-        st.session_state.voice_ui_open = True
+if mode == "Text":
+    text = st.text_input("Ketikkan perintah:")
+    trigger = st.button("Proses")
+else:
+    # Voice mode: langsung buka recorder (tanpa tombol rekam)
+    system_box.info("Silakan bicara. Rekaman otomatis siap digunakan.")
 
     # ✅ auto-open
     st.session_state.voice_ui_open = True
