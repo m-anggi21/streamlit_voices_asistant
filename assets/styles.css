@@ -551,28 +551,36 @@ section.main div[data-testid="stVerticalBlock"]{
 .order-mini-gap{
   height: 2px;
 }
-
 /* =================================================
-   TOP NAV — FIX SIZE & VERTICAL POSITION (FINAL)
+   TOP NAV AREA — rapatkan HR atas & bawah ke radio
+   (khusus area top-nav saja)
    ================================================= */
 
-/* Wrapper: rapat ke atas & bawah */
-.top-nav-wrap{
-  margin-top: 4px !important;
-  margin-bottom: 6px !important;
-  padding: 4px 0 !important;
-
-  border: none !important;
-  background: transparent !important;
+/* wrapper area (isi: hr + radio + hr) */
+.top-nav-area{
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
-/* Radiogroup container */
-.top-nav-wrap div[role="radiogroup"]{
-  display: flex !important;
-  align-items: center !important;
-  gap: 18px !important;
-  padding: 0 !important;
-  margin: 0 !important;
+/* rapatkan jarak divider (st.markdown('---') => hr) */
+.top-nav-area hr{
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+/* hilangkan spacer/gap block di sekitar area ini */
+.top-nav-area div[data-testid="stVerticalBlock"]{
+  gap: 0px !important;
+}
+
+/* rapatkan wrapper radio juga */
+.top-nav-wrap{
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 /* ===============================
