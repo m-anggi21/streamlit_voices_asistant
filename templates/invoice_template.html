@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Struk - {{SHOP_NAME}} - {{ORDER_NO}}</title>
+  <style>
+    :root{ --fg:#111; --muted:#555; --border:#e5e7eb; }
+    body{ font-family: Arial, Helvetica, sans-serif; color:var(--fg); margin:0; padding:24px; background:#fff; }
+    .wrap{ max-width: 720px; margin: 0 auto; }
+    .head{ display:flex; justify-content:space-between; gap:16px; align-items:flex-start; }
+    .shop{ font-size:20px; font-weight:800; margin:0; }
+    .meta{ font-size:13px; color:var(--muted); line-height:1.4; text-align:right; }
+    .box{ border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px; }
+    .row{ display:flex; justify-content:space-between; gap:12px; font-size:14px; line-height:1.5; }
+    .row b{ font-weight:700; }
+    .small{ font-size:12px; color:var(--muted); margin-top:6px; }
+    table{ width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td{ padding:10px 8px; border-bottom:1px solid var(--border); font-size:14px; }
+    th{ text-align:left; font-size:12px; letter-spacing:.2px; color:var(--muted); text-transform:uppercase; }
+    td.price, th.price{ text-align:right; white-space:nowrap; }
+    td.qty, th.qty{ width:64px; white-space:nowrap; }
+    .total{ display:flex; justify-content:space-between; gap:12px; margin-top:12px; font-size:16px; font-weight:800; }
+    .foot{ margin-top:18px; text-align:center; color:var(--muted); font-size:12px; }
+    @media print{
+      body{ padding:0; }
+      .wrap{ max-width:none; }
+      .box{ border:1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="shop">{{SHOP_NAME}}</p>
+        <div class="small">Struk / Invoice</div>
+      </div>
+      <div class="meta">
+        <div><b>No. Antrian:</b> {{ORDER_NO}}</div>
+        <div><b>Tanggal:</b> {{ORDER_DATE}}</div>
+        <div><b>Status:</b> {{STATUS}}</div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="row"><span><b>Pelanggan</b></span><span>{{CUSTOMER_NAME}}</span></div>
+      <div class="row"><span><b>Alamat</b></span><span style="text-align:right; max-width: 420px;">{{CUSTOMER_ADDR}}</span></div>
+      <div class="row"><span><b>Metode Pembayaran</b></span><span>{{PAYMENT_METHOD}}</span></div>
+
+      <table>
+        <thead>
+          <tr><th class="qty">Qty</th><th>Item</th><th class="price">Subtotal</th></tr>
+        </thead>
+        <tbody>
+          {{ITEM_ROWS}}
+        </tbody>
+      </table>
+
+      <div class="total">
+        <span>Total</span>
+        <span>{{TOTAL}}</span>
+      </div>
+    </div>
+
+    <div class="foot">
+      Simpan struk ini sebagai bukti pemesanan. <br/>
+      Tips: buka file HTML lalu <b>Print</b> → <b>Save as PDF</b>.
+    </div>
+  </div>
+</body>
+</html>
