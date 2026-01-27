@@ -30,6 +30,11 @@ pydub>=0.25.1
 streamlit-autorefresh>=1.0.1
 
 # =========================
+# PDF GENERATION
+# =========================
+reportlab>=4.0.0
+
+# =========================
 # UTILITIES (SAFE)
 # =========================
 typing-extensions>=4.8.0
