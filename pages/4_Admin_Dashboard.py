@@ -1,6 +1,7 @@
 # pages/4_Admin_Dashboard.py
 import os
 import streamlit as st
+import streamlit.components.v1 as components
 from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
 
@@ -10,8 +11,34 @@ from modules.admin_api import (
     update_order_status, delete_order
 )
 
+# STRUK PDF (thermal)
+from modules.user_views import get_paper_choice_ui, render_struk_pdf_download_button
+
 # ✅ Streamlit command pertama
 st.set_page_config(page_title="Admin Panel", page_icon="📦", layout="wide")
+
+
+def auto_print_pdf(pdf_bytes: bytes, title: str = "Struk"):
+    """Membuka dialog print browser untuk PDF (user tetap konfirmasi print)."""
+    import base64
+    b64 = base64.b64encode(pdf_bytes).decode("utf-8")
+    html = f"""
+    <iframe id="pdfFrame" src="data:application/pdf;base64,{b64}" style="width:0;height:0;border:0;"></iframe>
+    <script>
+      const fr = document.getElementById('pdfFrame');
+      fr.onload = function() {{
+        try {{
+          fr.contentWindow.focus();
+          fr.contentWindow.print();
+        }} catch (e) {{
+          // fallback: open in new tab
+          window.open(fr.src, "_blank");
+        }}
+      }};
+    </script>
+    """
+    components.html(html, height=0)
+
 
 
 # ============================
@@ -57,6 +84,10 @@ with col_logout:
         st.stop()
 
 st.divider()
+
+# Ukuran kertas struk default
+paper_choice = "Thermal 80mm"
+
 
 # ============================
 # AUTO REFRESH (FIXED 30 DETIK)
@@ -281,6 +312,7 @@ for order in orders:
         st.markdown("### 🧾 Item Pesanan", unsafe_allow_html=True)
 
         items = get_order_items(order_id) or []
+
         if not items:
             st.caption("Tidak ada item.")
         else:
@@ -323,6 +355,8 @@ for order in orders:
             if st.button("Update Status", key=f"u-{order_id}", use_container_width=True):
                 update_order_status(order_id, new_status)
                 st.success("Status berhasil diperbarui.")
+                if str(new_status).strip().lower() == "dikirim":
+                    st.session_state["__print_struk_order_id"] = order_id
                 st.rerun()
 
         with col2:
@@ -333,3 +367,22 @@ for order in orders:
                     st.rerun()
                 else:
                     st.error(f"Gagal hapus pesanan: {err}")
+
+        st.markdown('')
+
+
+        # Tombol download struk per pesanan (PDF thermal)
+        user_for_struk = {
+            "nama": nama,
+            "cluster": order.get("cluster"),
+            "blok": order.get("blok"),
+            "no_rumah": order.get("no_rumah"),
+        }
+        render_struk_pdf_download_button(
+            user_for_struk,
+            order,
+            items,
+            key_prefix=f"admin_inv_{order_id}",
+            paper_choice=paper_choice,
+        )
+
