@@ -19,7 +19,7 @@ st.set_page_config(page_title="Admin Panel", page_icon="📦", layout="wide")
 
 
 def render_print_button(pdf_bytes: bytes, label: str = "🖨️ Cetak Struk (PDF)"):
-    """Render tombol cetak yang aman dari blokir browser (butuh klik user)."""
+    """Tombol cetak yang lebih stabil: buka window baru berisi iframe PDF lalu print setelah load."""
     import base64
     b64 = base64.b64encode(pdf_bytes).decode("utf-8")
     html = f"""
@@ -30,35 +30,59 @@ def render_print_button(pdf_bytes: bytes, label: str = "🖨️ Cetak Struk (PDF
         {label}
       </button>
       <div style="margin-top:6px; font-size:12px; opacity:.75;">
-        Jika tidak muncul dialog print, pastikan pop-up diizinkan untuk situs ini.
+        Jika preview masih kosong, tunggu 1–2 detik sampai PDF termuat (atau izinkan pop-up).
       </div>
     </div>
+
     <script>
-      const dataUrl = "data:application/pdf;base64,{b64}";
+      const b64 = "{b64}";
       const btn = document.getElementById("printBtn");
-      btn.addEventListener("click", () => {{
-        // buka di tab baru (lebih kompatibel), lalu print
-        const w = window.open(dataUrl, "_blank");
+
+      function openAndPrint() {{
+        // Window baru (user gesture) supaya tidak diblokir
+        const w = window.open("", "_blank");
         if (!w) {{
           alert("Pop-up diblokir. Izinkan pop-up lalu klik lagi.");
           return;
         }}
-        const timer = setInterval(() => {{
-          try {{
-            if (w.document && w.document.readyState === "complete") {{
-              clearInterval(timer);
-              w.focus();
-              w.print();
-            }}
-          }} catch(e) {{
-            // ignore cross-origin readiness; fallback timeout
-          }}
-        }}, 300);
-        // fallback: print after 1.5s
-        setTimeout(() => {{
-          try {{ w.focus(); w.print(); }} catch(e) {{}}
-        }}, 1500);
-      }});
+
+        const doc = w.document;
+        doc.open();
+        doc.write(`
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Cetak Struk</title>
+  <style>
+    html, body {{ margin:0; padding:0; height:100%; }}
+    iframe {{ width:100%; height:100%; border:0; }}
+  </style>
+</head>
+<body>
+  <iframe id="pdfFrame" src="data:application/pdf;base64,${{b64}}"></iframe>
+  <script>
+    const fr = document.getElementById('pdfFrame');
+    fr.onload = function() {{
+      // Delay kecil agar renderer PDF siap (mencegah print blank)
+      setTimeout(function() {{
+        try {{
+          fr.contentWindow.focus();
+          fr.contentWindow.print();
+        }} catch (e) {{
+          // fallback: user bisa print manual dari tab ini
+          console.log(e);
+        }}
+      }}, 700);
+    }};
+  <\/script>
+</body>
+</html>
+        `);
+        doc.close();
+      }}
+
+      btn.addEventListener("click", openAndPrint);
     </script>
     """
     components.html(html, height=95)
