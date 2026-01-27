@@ -12,7 +12,7 @@ from modules.admin_api import (
 )
 
 # STRUK PDF (thermal)
-from modules.user_views import get_paper_choice_ui, render_struk_pdf_download_button
+from modules.user_views import render_struk_pdf_download_button
 
 # ✅ Streamlit command pertama
 st.set_page_config(page_title="Admin Panel", page_icon="📦", layout="wide")
@@ -180,6 +180,44 @@ def format_jam(created_at):
 # ============================
 orders_all = get_all_orders() or []
 
+
+
+# ============================
+# AUTO-CETAK (BUTUH KLIK) SETELAH STATUS -> "dikirim"
+# ============================
+print_order_id = st.session_state.get("__print_struk_order_id")
+if print_order_id:
+    try:
+        _order = None
+        for _o in orders_all:
+            if int(_o.get("orders_id") or 0) == int(print_order_id):
+                _order = _o
+                break
+
+        if _order:
+            _items = get_order_items(int(print_order_id)) or []
+            _user_for_struk = {
+                "nama": _order.get("nama") or _order.get("nama_user") or _order.get("username") or "User",
+                "cluster": _order.get("cluster"),
+                "blok": _order.get("blok"),
+                "no_rumah": _order.get("no_rumah"),
+            }
+
+            # Generate PDF struk
+            from modules.user_views import _build_invoice_context as _ctx_builder, _render_invoice_pdf as _pdf_builder
+            _ctx = _ctx_builder(_user_for_struk, _order, _items)
+            _pdf = _pdf_builder(_ctx, paper_choice)
+
+            # Tampilkan tombol cetak (klik user diperlukan supaya tidak diblokir browser)
+            st.success("Status berhasil diubah ke 'dikirim'. Silakan cetak struk:")
+            render_print_button(_pdf, label="🖨️ Cetak Struk (PDF)")
+
+        # hapus flag setelah komponen ditampilkan
+        st.session_state.pop("__print_struk_order_id", None)
+
+    except Exception as e:
+        st.session_state.pop("__print_struk_order_id", None)
+        st.error(f"Gagal menyiapkan struk untuk cetak: {e}")
 
 # ============================
 # DETEKSI ORDER BARU (BADGE AUTO-HIDE 5 DETIK)
