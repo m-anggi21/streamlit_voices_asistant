@@ -18,26 +18,50 @@ from modules.user_views import get_paper_choice_ui, render_struk_pdf_download_bu
 st.set_page_config(page_title="Admin Panel", page_icon="📦", layout="wide")
 
 
-def auto_print_pdf(pdf_bytes: bytes, title: str = "Struk"):
-    """Membuka dialog print browser untuk PDF (user tetap konfirmasi print)."""
+def render_print_button(pdf_bytes: bytes, label: str = "🖨️ Cetak Struk (PDF)"):
+    """Render tombol cetak yang aman dari blokir browser (butuh klik user)."""
     import base64
     b64 = base64.b64encode(pdf_bytes).decode("utf-8")
     html = f"""
-    <iframe id="pdfFrame" src="data:application/pdf;base64,{b64}" style="width:0;height:0;border:0;"></iframe>
+    <div style="margin: 8px 0;">
+      <button id="printBtn"
+        style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.15);
+               background:#1f2937; color:#fff; cursor:pointer; font-weight:600;">
+        {label}
+      </button>
+      <div style="margin-top:6px; font-size:12px; opacity:.75;">
+        Jika tidak muncul dialog print, pastikan pop-up diizinkan untuk situs ini.
+      </div>
+    </div>
     <script>
-      const fr = document.getElementById('pdfFrame');
-      fr.onload = function() {{
-        try {{
-          fr.contentWindow.focus();
-          fr.contentWindow.print();
-        }} catch (e) {{
-          // fallback: open in new tab
-          window.open(fr.src, "_blank");
+      const dataUrl = "data:application/pdf;base64,{b64}";
+      const btn = document.getElementById("printBtn");
+      btn.addEventListener("click", () => {{
+        // buka di tab baru (lebih kompatibel), lalu print
+        const w = window.open(dataUrl, "_blank");
+        if (!w) {{
+          alert("Pop-up diblokir. Izinkan pop-up lalu klik lagi.");
+          return;
         }}
-      }};
+        const timer = setInterval(() => {{
+          try {{
+            if (w.document && w.document.readyState === "complete") {{
+              clearInterval(timer);
+              w.focus();
+              w.print();
+            }}
+          }} catch(e) {{
+            // ignore cross-origin readiness; fallback timeout
+          }}
+        }}, 300);
+        // fallback: print after 1.5s
+        setTimeout(() => {{
+          try {{ w.focus(); w.print(); }} catch(e) {{}}
+        }}, 1500);
+      }});
     </script>
     """
-    components.html(html, height=0)
+    components.html(html, height=95)
 
 
 
