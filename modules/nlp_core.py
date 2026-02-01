@@ -599,15 +599,23 @@ def detect_explicit_qty(tokens, variant=None, variant_numbers=None):
             continue
 
         if t.isdigit():
-            # ✅ jika angka ini termasuk varian dari katalog -> bukan qty
-            if t in var_nums:
+            # varian air yang memang harus dianggap VARIAN (bukan qty)
+            WATER_VARIANTS = {"1500", "600", "500", "400", "350", "330", "240", "19", "1.5"}
+
+            # konteks gas/berat (kalau ada, angka cenderung varian kg)
+            GAS_HINTS = {"gas", "elpiji", "lpg", "bright", "tabung"}
+            has_gas_context = any(x in tokens for x in GAS_HINTS) or any(x in tokens for x in {"kg", "kilo", "kilogram"})
+
+            # ✅ Jika angka ini varian air -> jangan jadi qty
+            if t in WATER_VARIANTS:
                 continue
 
-            # ✅ jika varian sudah terdeteksi dan angka ini bagian dari varian -> bukan qty
-            # contoh v="600ml" dan t="600"
-            if v and (t in v):
+            # ✅ Jika angka ini termasuk varian katalog (mis: 3 dari 3kg),
+            #    anggap VARIAN hanya kalau ada konteks gas/kg.
+            if t in var_nums and has_gas_context:
                 continue
 
+            # kalau sampai sini, angka dianggap QTY
             return (max(1, int(t)), True)
 
     # 3) kata angka: "dua", "tiga", dst (ini boleh jadi qty)
@@ -869,6 +877,32 @@ def parse_orders_verbose(text, catalog):
         # paksa packaging lebih prioritas daripada direct alias kalau brand belum jelas
         if has_packaging and (not explicit_brand):
             direct = []   # matikan direct alias supaya jatuh ke LOGIC packaging
+
+        # ==============================
+        # GUARD: brand ada tapi variant belum jelas
+        # ==============================
+        if explicit_brand and not variant and not size_group:
+            brand_keys = _keys_by_brand(explicit_brand)
+
+            results.append({
+                "text": text,
+                "chunk": s_chunk,
+                "kategori": category,
+                "variant": variant,
+                "size_group": size_group,
+                "qty": qty,
+                "has_explicit_qty": has_explicit_qty,
+                "candidates_all": brand_keys,
+                "chosen_key": None,
+                "chosen_item": None,
+                "need_action": {
+                    "type": "choose_item",
+                    "title": f"Pilih varian produk {explicit_brand}:",
+                    "options": brand_keys,
+                },
+                "logic": "GUARD_BRAND_WITHOUT_VARIANT",
+            })
+            continue
 
         # -----------------------------
         # LOGIC 0 — DIRECT ALIAS (PRIORITAS TERTINGGI, TAPI HARUS SPESIFIK)
@@ -1328,6 +1362,70 @@ def parse_orders_verbose(text, catalog):
             })
             continue
 
+        # ==============================
+        # GUARD: BRAND + VARIAN/CONTAINER DIMINTA, TAPI TIDAK ADA DI KATALOG
+        # ==============================
+        if explicit_brand:
+            keys_brand = _keys_by_brand(explicit_brand)
+            keys_brand = _uniq(keys_brand)
+
+            # user dianggap "meminta varian spesifik" jika menyebut:
+            # - variant terdeteksi (ml/l/kg/19l)
+            # - size_group (kecil/sedang/besar/cup/galon)
+            # - kata container: galon/botol/cup/gelas
+            asked_container = any(t in {"galon", "botol", "cup", "gelas"} for t in token_set)
+            asked_specific = bool(variant) or bool(size_group) or asked_container
+
+            if asked_specific:
+                keys_match = list(keys_brand)
+
+                # filter by variant jika ada (contoh: aqua + 19l)
+                if variant:
+                    v = (variant or "").strip().lower()
+                    keys_match = [
+                        k for k in keys_match
+                        if (catalog.get(k, {}).get("varian") or "").strip().lower() == v
+                    ]
+
+                # kalau user bilang "galon" tapi variant belum kebaca (antisipasi)
+                if (not variant) and asked_container and ("galon" in token_set):
+                    keys_match = [
+                        k for k in keys_match
+                        if ("galon" in (catalog.get(k, {}).get("kategori") or "").lower())
+                        or ((catalog.get(k, {}).get("varian") or "").lower() in {"19l", "19"})
+                        or ("galon" in normalize(catalog.get(k, {}).get("nama") or ""))
+                    ]
+
+                # kalau user bilang size_group (kecil/sedang/besar/cup/galon)
+                if (not variant) and size_group:
+                    patterns = SIZE_GROUP[size_group]["patterns"]
+                    keys_match = [
+                        k for k in keys_match
+                        if any(p in (catalog.get(k, {}).get("varian") or "").lower() for p in patterns)
+                        or any(p in normalize(catalog.get(k, {}).get("nama") or "") for p in patterns)
+                    ]
+
+                # ✅ kalau kosong -> unavailable (jangan jatuh ke BRAND ONLY)
+                if not keys_match:
+                    results.append({
+                        "text": text,
+                        "chunk": s_chunk,
+                        "kategori": category,
+                        "variant": variant,
+                        "size_group": size_group,
+                        "qty": qty,
+                        "has_explicit_qty": has_explicit_qty,
+                        "candidates_all": [],
+                        "chosen_key": None,
+                        "chosen_item": None,
+                        "need_action": {
+                            "type": "unavailable",
+                            "title": "not_available",  # key dari voice_phrases.csv
+                        },
+                        "logic": "FALLBACK_NOT_AVAILABLE_BRAND_VARIANT",
+                    })
+                    continue
+
         # -----------------------------
         # LOGIC 5 — BRAND ONLY
         # -----------------------------
@@ -1401,6 +1499,44 @@ def parse_orders_verbose(text, catalog):
                     "options": _as_options(keys),
                 },
                 "logic": "L6_ALIAS_UMUM",
+            })
+            continue
+
+        # =============================
+        # FALLBACK: brand/variant tidak dikenali sama sekali
+        # =============================
+        # kondisi: tidak ada kandidat sama sekali
+        no_candidate = (not brand_keys) and (not strongs) and (not weaks) and (not direct)
+
+        # token yang "berpotensi brand/produk" (bukan stopword, bukan angka, bukan kata kemasan/varian umum)
+        GENERIC_REQ = {"pesan","beli","order","mau","tambah","tolong","dong","ya","pak","bu","mbak","mas"}
+        content_tokens = [
+            t for t in tokens
+            if t not in GENERIC_REQ
+            and t not in STOPWORDS
+            and (not t.isdigit())
+            and t not in PACKAGING_WORDS
+            and t not in ALIAS_VARIANT_WORDS
+        ]
+
+        # kalau user menyebut sesuatu (content token) tapi sistem tidak menemukan kandidat apapun → unavailable
+        if no_candidate and content_tokens:
+            results.append({
+                "text": text,
+                "chunk": s_chunk,
+                "kategori": category,
+                "variant": variant,
+                "size_group": size_group,
+                "qty": qty,
+                "has_explicit_qty": has_explicit_qty,
+                "candidates_all": [],
+                "chosen_key": None,
+                "chosen_item": None,
+                "need_action": {
+                    "type": "unavailable",
+                    "title": "not_available",   # pakai key phrase, bukan hardcode
+                },
+                "logic": "FALLBACK_NOT_AVAILABLE",
             })
             continue
 
