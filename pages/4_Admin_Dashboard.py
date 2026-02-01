@@ -12,82 +12,59 @@ from modules.admin_api import (
 )
 
 # STRUK PDF (thermal)
-from modules.user_views import render_struk_pdf_download_button
+from modules.user_views import render_struk_pdf_download_button, build_struk_pdf_bytes
 
 # ✅ Streamlit command pertama
 st.set_page_config(page_title="Admin Panel", page_icon="📦", layout="wide")
 
 
-def render_print_button(pdf_bytes: bytes, label: str = "🖨️ Cetak Struk (PDF)"):
-    """Tombol cetak yang lebih stabil: buka window baru berisi iframe PDF lalu print setelah load."""
+def auto_print_pdf(pdf_bytes: bytes, title: str = "Struk"):
+    """Open PDF in new tab reliably, then trigger print."""
     import base64
     b64 = base64.b64encode(pdf_bytes).decode("utf-8")
+
     html = f"""
-    <div style="margin: 8px 0;">
-      <button id="printBtn"
-        style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.15);
-               background:#1f2937; color:#fff; cursor:pointer; font-weight:600;">
-        {label}
-      </button>
-      <div style="margin-top:6px; font-size:12px; opacity:.75;">
-        Jika preview masih kosong, tunggu 1–2 detik sampai PDF termuat (atau izinkan pop-up).
-      </div>
-    </div>
-
     <script>
+    (function() {{
+      // decode base64 -> Uint8Array
       const b64 = "{b64}";
-      const btn = document.getElementById("printBtn");
+      const byteChars = atob(b64);
+      const byteNumbers = new Array(byteChars.length);
+      for (let i = 0; i < byteChars.length; i++) {{
+        byteNumbers[i] = byteChars.charCodeAt(i);
+      }}
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], {{ type: "application/pdf" }});
+      const blobUrl = URL.createObjectURL(blob);
 
-      function openAndPrint() {{
-        // Window baru (user gesture) supaya tidak diblokir
-        const w = window.open("", "_blank");
-        if (!w) {{
-          alert("Pop-up diblokir. Izinkan pop-up lalu klik lagi.");
-          return;
-        }}
-
-        const doc = w.document;
-        doc.open();
-        doc.write(`
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>Cetak Struk</title>
-  <style>
-    html, body {{ margin:0; padding:0; height:100%; }}
-    iframe {{ width:100%; height:100%; border:0; }}
-  </style>
-</head>
-<body>
-  <iframe id="pdfFrame" src="data:application/pdf;base64,${{b64}}"></iframe>
-  <script>
-    const fr = document.getElementById('pdfFrame');
-    fr.onload = function() {{
-      // Delay kecil agar renderer PDF siap (mencegah print blank)
-      setTimeout(function() {{
-        try {{
-          fr.contentWindow.focus();
-          fr.contentWindow.print();
-        }} catch (e) {{
-          // fallback: user bisa print manual dari tab ini
-          console.log(e);
-        }}
-      }}, 700);
-    }};
-  <\/script>
-</body>
-</html>
-        `);
-        doc.close();
+      // IMPORTANT: open tab first (user gesture), then set content
+      const w = window.open("", "_blank");
+      if (!w) {{
+        alert("Popup diblokir browser. Izinkan pop-up untuk cetak struk.");
+        return;
       }}
 
-      btn.addEventListener("click", openAndPrint);
+      w.document.title = "{title}";
+      w.document.body.style.margin = "0";
+      w.document.body.innerHTML =
+        '<iframe id="pdf" style="border:0;width:100vw;height:100vh;" src="' + blobUrl + '"></iframe>';
+
+      const fr = w.document.getElementById("pdf");
+
+      // tunggu iframe benar-benar load, baru print
+      fr.onload = function() {{
+        setTimeout(() => {{
+          try {{
+            w.focus();
+            w.print();
+          }} catch (e) {{}}
+        }}, 300);
+      }};
+    }})();
     </script>
     """
-    components.html(html, height=95)
-
-
+    import streamlit.components.v1 as components
+    components.html(html, height=1)  # jangan 0 supaya iframe/js benar-benar dieksekusi stabil
 
 # ============================
 # LOAD CSS
@@ -204,44 +181,6 @@ def format_jam(created_at):
 # ============================
 orders_all = get_all_orders() or []
 
-
-
-# ============================
-# AUTO-CETAK (BUTUH KLIK) SETELAH STATUS -> "dikirim"
-# ============================
-print_order_id = st.session_state.get("__print_struk_order_id")
-if print_order_id:
-    try:
-        _order = None
-        for _o in orders_all:
-            if int(_o.get("orders_id") or 0) == int(print_order_id):
-                _order = _o
-                break
-
-        if _order:
-            _items = get_order_items(int(print_order_id)) or []
-            _user_for_struk = {
-                "nama": _order.get("nama") or _order.get("nama_user") or _order.get("username") or "User",
-                "cluster": _order.get("cluster"),
-                "blok": _order.get("blok"),
-                "no_rumah": _order.get("no_rumah"),
-            }
-
-            # Generate PDF struk
-            from modules.user_views import _build_invoice_context as _ctx_builder, _render_invoice_pdf as _pdf_builder
-            _ctx = _ctx_builder(_user_for_struk, _order, _items)
-            _pdf = _pdf_builder(_ctx, paper_choice)
-
-            # Tampilkan tombol cetak (klik user diperlukan supaya tidak diblokir browser)
-            st.success("Status berhasil diubah ke 'dikirim'. Silakan cetak struk:")
-            render_print_button(_pdf, label="🖨️ Cetak Struk (PDF)")
-
-        # hapus flag setelah komponen ditampilkan
-        st.session_state.pop("__print_struk_order_id", None)
-
-    except Exception as e:
-        st.session_state.pop("__print_struk_order_id", None)
-        st.error(f"Gagal menyiapkan struk untuk cetak: {e}")
 
 # ============================
 # DETEKSI ORDER BARU (BADGE AUTO-HIDE 5 DETIK)
@@ -457,18 +396,40 @@ for order in orders:
         st.markdown('')
 
 
-        # Tombol download struk per pesanan (PDF thermal)
+        # Tombol Download + Cetak Struk
         user_for_struk = {
             "nama": nama,
             "cluster": order.get("cluster"),
             "blok": order.get("blok"),
             "no_rumah": order.get("no_rumah"),
         }
-        render_struk_pdf_download_button(
-            user_for_struk,
-            order,
-            items,
-            key_prefix=f"admin_inv_{order_id}",
-            paper_choice=paper_choice,
-        )
 
+        col_dl, col_print = st.columns(2)
+
+        # tombol download
+        with col_dl:
+            render_struk_pdf_download_button(
+                user_for_struk,
+                order,
+                items,
+                key_prefix=f"admin_inv_{order_id}",
+                paper_choice=paper_choice,
+            )
+
+        # tombol cetak
+        with col_print:
+            if st.button(
+                "🖨 Cetak Struk",
+                key=f"print-{order_id}",
+                use_container_width=True,
+            ):
+                from modules.user_views import build_struk_pdf_bytes
+
+                pdf_bytes = build_struk_pdf_bytes(
+                    user_for_struk,
+                    order,
+                    items,
+                    paper_choice=paper_choice,
+                )
+
+                auto_print_pdf(pdf_bytes)
