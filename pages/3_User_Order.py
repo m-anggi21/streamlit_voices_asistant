@@ -711,6 +711,19 @@ if pc:
             clear_pending()
             st.rerun()
 
+    if need_type == "unavailable":
+        tts_text = say_phrase("not_available", lang="id")
+        if not tts_text:
+            raise KeyError("Phrase key 'not_available' tidak ditemukan / kosong di voice_phrases.csv")
+
+        st.warning(tts_text)
+        speak(tts_text, lang="id")
+
+        clear_pending()
+        st.session_state.pause_voice = False
+        st.session_state.skip_listen_once = True  # supaya recorder tidak langsung ketimpa proses
+        st.rerun()
+
     # -----------------------------
     # 1A) HANDLER: choose_brand_then_item (dari NLP)
     # -----------------------------
