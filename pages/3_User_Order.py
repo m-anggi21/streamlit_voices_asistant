@@ -320,7 +320,7 @@ if st.session_state.get("checkout_ready") and not st.session_state.get("order_su
 
             import os
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            qris_path = os.path.join(base_dir, "assets", "qris.png")  # pastikan nama file sama
+            qris_path = os.path.join(base_dir, "assets", "QRIS.png")  # pastikan nama file sama
 
             if os.path.exists(qris_path):
                 col_l, col_c, col_r = st.columns([1, 2, 1])
