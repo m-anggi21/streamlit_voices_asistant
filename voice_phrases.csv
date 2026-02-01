@@ -1,4 +1,4 @@
-﻿key,text,lang,note
+key,text,lang,note
 welcome,Selamat datang di Toko Depo 78. Silakan melakukan pemesanan.,id,Sambutan awal
 
 welcome_user,Halo {nama}. Silakan berbelanja.,id,Sambutan awal user order (pakai nama)
@@ -19,7 +19,7 @@ yes,Ya, baik.,id,Jawaban afirmatif
 
 no,Tidak.,id,Jawaban negatif
 
-continue,Lanjut, silakan.,id,Melanjutkan proses
+not_available,Mohon maaf brand atau varian yang Anda minta belum tersedia.,id,Fallback brand/variant tidak ada
 
 cancel,Baik, saya batalkan.,id,Membatalkan tindakan
 
