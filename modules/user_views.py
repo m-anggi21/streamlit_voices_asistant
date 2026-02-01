@@ -1,9 +1,6 @@
 # modules/user_views.py
 import streamlit as st
 from typing import List, Dict, Any, Optional
-
-
-
 from pathlib import Path
 from datetime import datetime
 import html as _html
@@ -241,6 +238,12 @@ def get_paper_choice_ui(page_key: str) -> str:
     """Deprecated: ukuran kertas diset default."""
     return "Thermal 80mm"
 
+def build_struk_pdf_bytes(user: dict, order: dict, items: list, paper_choice: str) -> bytes:
+    """
+    Generate PDF struk (bytes) untuk dipakai download maupun print.
+    """
+    ctx = _build_invoice_context(user, order, items)
+    return _render_invoice_pdf(ctx, paper_choice)
 
 def render_struk_pdf_download_button(user: dict, order: dict, items: list, key_prefix: str, paper_choice: str):
     """Tombol download PDF per pesanan."""
@@ -249,9 +252,10 @@ def render_struk_pdf_download_button(user: dict, order: dict, items: list, key_p
     base_name = f"struk_{ctx.get('ORDER_NO','order')}_{ctx.get('ORDER_ID','')}"
     base_name = re.sub(r"[^A-Za-z0-9_\-]", "_", base_name).strip("_") or "struk"
 
+    pdf_bytes = build_struk_pdf_bytes(user, order, items, paper_choice)
     st.download_button(
         "⬇️ Download Struk (PDF)",
-        data=_render_invoice_pdf(ctx, paper_choice),
+        data=pdf_bytes,
         file_name=f"{base_name}.pdf",
         mime="application/pdf",
         key=f"{key_prefix}_pdf",
