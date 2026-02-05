@@ -9,7 +9,7 @@ after_summary_prompt,Jika ada perintah tambahan, silakan ucapkan. Jika ingin mem
 
 no_hear,Maaf, saya tidak menangkap suara Anda Mohon ulangi.,id,Tidak terdengar
 
-choice,Silakan pilih nomor opsi yang Anda inginkan, atau sebutkan merk/nama produk.,id,pilihan
+confirm_choice,Silakan konfirmasi pilihan Anda dengan jelas.,id,Konfirmasi pilihan
 
 not_understood,Saya belum memahami maksud Anda. Mohon jelaskan kembali.,id,Tidak mengerti
 
@@ -39,7 +39,7 @@ total_summary,Total pesanan Anda saat ini adalah Rp{total:,}.,id,Total belanja
 
 option_prompt,Terdapat beberapa pilihan produk. Silakan pilih nomor atau sebutkan nama.,id,Opsi produk
 
-ask_qty,Berapa jumlah yang Anda inginkan untuk produk {name}?,id,Tanya jumlah
+ask_qty,Berapa jumlah yang Anda inginkan untuk produk ini?,id,Tanya jumlah
 
 ask_category,Produk apa yang Anda maksud? Contoh: Aqua galon.,id,Tanya kategori
 
