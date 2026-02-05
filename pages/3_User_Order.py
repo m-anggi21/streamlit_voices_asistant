@@ -320,7 +320,7 @@ if st.session_state.get("checkout_ready") and not st.session_state.get("order_su
 
             import os
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            qris_path = os.path.join(base_dir, "assets", "QRIS.png")  # pastikan nama file sama
+            qris_path = os.path.join(base_dir, "assets", "qris.png")  # pastikan nama file sama
 
             if os.path.exists(qris_path):
                 col_l, col_c, col_r = st.columns([1, 2, 1])
@@ -538,15 +538,38 @@ def _add_item_to_cart(chosen_item: dict, qty: int):
 # ============================================================
 pa = st.session_state.pending_action
 if pa and pa.get("type") == "ask_qty":
-    st.warning(pa.get("title") or "Berapa jumlahnya?")
+    st.warning(pa.get("title") or "Berapa jumlah yang ingin Anda pesan?")
+
+    # 🔊 SAY PHRASE — HANYA SEKALI SAAT MASUK MENU
+    if not st.session_state.get("ask_qty_tts_done"):
+        tts_qty = say_phrase("ask_qty", lang="id")
+        if not tts_qty:
+            raise KeyError("Phrase key 'ask_qty' tidak ditemukan / kosong di voice_phrases.csv")
+        speak(tts_qty, lang="id")
+        st.session_state.ask_qty_tts_done = True
 
     qty = st.number_input("Jumlah:", min_value=1, step=1)
 
-    if st.button("✅ Tambahkan ke Keranjang"):
-        tts_reset_queue()
-        _add_item_to_cart(pa["chosen_item"], int(qty))
-        clear_pending()
-        st.rerun()
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("✅ Tambahkan ke Keranjang", key="btn_add_to_cart"):
+            tts_reset_queue()
+            _add_item_to_cart(pa["chosen_item"], int(qty))
+            clear_pending()
+            st.session_state.ask_qty_tts_done = False
+            st.rerun()
+    
+    with col2:
+        if st.button("⬅ Kembali", key="btn_back_to_confirm"):
+            # reset flag karena keluar menu
+            st.session_state.ask_qty_tts_done = False
+
+            st.session_state.pending_choice = st.session_state.get("prev_pending_choice")
+            st.session_state.pending_action = None
+            st.session_state.pause_voice = True
+            st.rerun()
+
 
     tts_flush(show_controls=True)
     st.stop()
@@ -685,6 +708,19 @@ if pc:
     st.subheader("🔎 Perlu Konfirmasi Pilihan")
     st.info(need.get("title") or "Pilih salah satu:")
 
+    # 🔊 SAY PHRASE — HANYA SEKALI SAAT MASUK MENU
+    if not st.session_state.get("confirm_choice_tts_done"):
+        tts_confirm = say_phrase("confirm_choice")
+        if not tts_confirm:
+            raise KeyError(
+                "Phrase key 'confirm_choice' tidak ditemukan / kosong di voice_phrases.csv"
+            )
+
+        # lang diambil dari dataset (CSV), bukan hardcode
+        speak(tts_confirm, lang="id")
+
+        st.session_state.confirm_choice_tts_done = True
+
     def _set_pending_need(next_need: dict, keep_qty=True):
         """helper untuk lanjut ke tahap berikutnya"""
         st.session_state.pending_choice = {
@@ -698,17 +734,29 @@ if pc:
     def _finalize_add(chosen_item: dict):
         """kalau qty belum disebut -> tanya qty dulu, kalau sudah -> add"""
         if (qty_from_text is None) or (not has_explicit_qty):
-            # wajib tanya qty jika qty tidak eksplisit dari user
+            # 🔁 user KELUAR dari menu konfirmasi → reset TTS konfirmasi
+            st.session_state.confirm_choice_tts_done = False
+
+            # simpan state untuk tombol Back
+            st.session_state.prev_pending_choice = st.session_state.pending_choice
+
             st.session_state.pending_action = {
                 "type": "ask_qty",
                 "title": "Berapa jumlah yang ingin Anda pesan?",
-                "chosen_item": chosen_item,
+                "chosen_item": chosen,
             }
+
+            # masuk ke menu ask_qty
             st.session_state.pending_choice = None
+            st.session_state.pause_voice = True
             st.rerun()
+
         else:
             _add_item_to_cart(chosen_item, int(qty_from_text))
             clear_pending()
+
+            # reset juga (aman kalau nanti user order lagi)
+            st.session_state.confirm_choice_tts_done = False
             st.rerun()
 
     if need_type == "unavailable":
