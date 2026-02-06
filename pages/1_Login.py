@@ -92,12 +92,12 @@ if st.button("Login", use_container_width=True):
             else:
                 st.switch_page("pages/3_User_Order.py")
 
-st.markdown(
-    "<div style='margin-top:10px; text-align:left;'>"
-    "<a class='depo-link' href='?page=forgot'>Forgot Password?</a>"
-    "</div>",
-    unsafe_allow_html=True,
-)
+# st.markdown(
+#     "<div style='margin-top:10px; text-align:left;'>"
+#     "<a class='depo-link' href='?page=forgot'>Forgot Password?</a>"
+#     "</div>",
+#     unsafe_allow_html=True,
+# )
 
 col_text, col_btn = st.columns([6, 40], gap="small")
 
