@@ -3,6 +3,8 @@ import streamlit as st
 import os
 from datetime import datetime
 import pytz
+tz = pytz.timezone("Asia/Jakarta")
+created_at_wib = datetime.now(tz)
 
 st.set_page_config(
     page_title="Order - Depo 78",
