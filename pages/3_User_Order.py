@@ -44,9 +44,9 @@ render_user_header_bar(user, do_logout, key_prefix="user_header")
 # ============================================================
 #   PROTEKSI LOGIN (WAJIB)
 # ============================================================
-if "auth" not in st.session_state or not st.session_state.auth.get("is_logged_in"):
-    st.error("Anda harus login terlebih dahulu.")
-    st.stop()
+# if "auth" not in st.session_state or not st.session_state.auth.get("is_logged_in"):
+#     st.error("Anda harus login terlebih dahulu.")
+#     st.stop()
 
 def load_css(path="assets/styles.css"):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
