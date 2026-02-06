@@ -91,6 +91,7 @@ if st.button("Login", use_container_width=True):
                 st.switch_page("pages/4_Admin_Dashboard.py")
             else:
                 st.switch_page("pages/3_User_Order.py")
+            st.rerun()
 
 # st.markdown(
 #     "<div style='margin-top:10px; text-align:left;'>"
