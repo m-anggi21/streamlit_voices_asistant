@@ -41,9 +41,9 @@ if user["role"] != "user":
     st.stop()
 render_user_header_bar(user, do_logout, key_prefix="user_header")
 
-# ============================================================
-#   PROTEKSI LOGIN (WAJIB)
-# ============================================================
+# # ============================================================
+# #   PROTEKSI LOGIN (WAJIB)
+# # ============================================================
 # if "auth" not in st.session_state or not st.session_state.auth.get("is_logged_in"):
 #     st.error("Anda harus login terlebih dahulu.")
 #     st.stop()
@@ -320,7 +320,7 @@ if st.session_state.get("checkout_ready") and not st.session_state.get("order_su
 
             import os
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            qris_path = os.path.join(base_dir, "assets", "QRIS.png")  # pastikan nama file sama
+            qris_path = os.path.join(base_dir, "assets", "qris.png")  # pastikan nama file sama
 
             if os.path.exists(qris_path):
                 col_l, col_c, col_r = st.columns([1, 2, 1])
