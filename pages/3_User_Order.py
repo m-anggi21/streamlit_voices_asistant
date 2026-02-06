@@ -1,10 +1,6 @@
 # pages/3_User_Order.py
 import streamlit as st
 import os
-from datetime import datetime
-import pytz
-tz = pytz.timezone("Asia/Jakarta")
-created_at_wib = datetime.now(tz)
 
 st.set_page_config(
     page_title="Order - Depo 78",
@@ -215,9 +211,6 @@ def pay_now_callback():
 # ============================================================
 if st.session_state.get("order_submitted") and st.session_state.get("submitted_order"):
     so = st.session_state.submitted_order
-    st.write(
-        f"Waktu: {so['created_at'].strftime('%Y-%m-%d %H:%M:%S')} WIB"
-    )
     st.write("---")
     st.subheader("✅ Pembayaran Berhasil")
     st.success("Pesanan Anda sudah diproses.")
@@ -424,7 +417,6 @@ if st.session_state.get("checkout_ready") and not st.session_state.get("order_su
                         "total": total,
                         "metode": st.session_state.get("payment_method"),
                         "items": list(st.session_state.cart),
-                         "created_at": created_at_wib,  # ✅ TAMBAHKAN INI
                     }
 
                     st.session_state.order_submitted = True
