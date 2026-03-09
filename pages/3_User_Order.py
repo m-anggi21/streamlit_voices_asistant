@@ -1,6 +1,7 @@
 # pages/3_User_Order.py
 import streamlit as st
 import os
+import re
 
 st.set_page_config(
     page_title="Order - Depo 78",
@@ -320,7 +321,7 @@ if st.session_state.get("checkout_ready") and not st.session_state.get("order_su
 
             import os
             base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            qris_path = os.path.join(base_dir, "assets", "QRIS.png")  # pastikan nama file sama
+            qris_path = os.path.join(base_dir, "assets", "qris.png")  # pastikan nama file sama
 
             if os.path.exists(qris_path):
                 col_l, col_c, col_r = st.columns([1, 2, 1])
@@ -447,6 +448,30 @@ if st.session_state.get("checkout_ready") and not st.session_state.get("order_su
 # ============================================================
 #   INPUT MODE (Dropdown / List) - default Voice
 # ============================================================
+
+def estimate_voice_accuracy(text: str):
+    """
+    Estimasi sederhana tingkat keakuratan STT.
+    Berdasarkan panjang kalimat dan jumlah kata yang valid.
+    """
+    if not text:
+        return 0
+
+    words = re.findall(r'\b[a-zA-Z0-9]+\b', text)
+    total_words = len(words)
+
+    if total_words == 0:
+        return 0
+
+    valid_words = [w for w in words if len(w) > 1]
+
+    score = (len(valid_words) / total_words) * 100
+
+    # batas minimum dan maksimum
+    score = max(40, min(100, score))
+
+    return round(score, 2)
+
 st.session_state.setdefault("input_mode", "Voice")
 
 st.markdown("<div class='mode-label'>Mode Input:</div>", unsafe_allow_html=True)
@@ -494,6 +519,22 @@ else:
             # ✅ reset skip flag setelah 1x run
             if skip_now:
                 st.session_state.skip_listen_once = False
+
+            # ==============================
+            # ANALISIS KUALITAS SUARA
+            # ==============================
+            quality = st.session_state.get("voice_quality", 0)
+
+            if quality:
+                voice_status_box.info(f"""
+            🎤 Analisis Kualitas Suara
+
+            Kejelasan Suara : **{quality}%**
+            """)
+
+                st.progress(int(quality))
+                st.caption(f"Presentase keakuratan pengenalan suara: **{quality}%**")
+            # ==============================
 
             if stt_text:
                 st.session_state.voice_text = stt_text
@@ -1108,6 +1149,7 @@ def clear_cart_full():
         "stt_last_hash", "stt_last_text",
         "vf_buf", "vf_last_voice", "vf_done",
         "vf_last_voice_ts", "vf_processing", "vf_level",
+        "voice_quality"
     ]:
         st.session_state.pop(k, None)
 
@@ -1119,6 +1161,7 @@ def clear_cart_full():
     voice_status_box.empty()
     said_box.empty()
     system_box.empty()
+    st.session_state.voice_quality = 0
 
     # optional flag yang kamu pakai
     if st.session_state.get("clear_boxes_once"):
