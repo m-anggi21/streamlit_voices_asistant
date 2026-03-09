@@ -4,7 +4,34 @@ from st_audiorec import st_audiorec
 import tempfile
 import speech_recognition as sr
 import hashlib
+import numpy as np
+import wave
 
+def analyze_audio_quality(audio_bytes):
+    """
+    Menghitung kualitas suara berdasarkan RMS energy
+    """
+    try:
+        import io
+
+        with wave.open(io.BytesIO(audio_bytes), "rb") as wf:
+            frames = wf.readframes(wf.getnframes())
+            audio = np.frombuffer(frames, dtype=np.int16)
+
+        if len(audio) == 0:
+            return 0
+
+        # RMS energy
+        rms = np.sqrt(np.mean(audio.astype(np.float32) ** 2))
+
+        # normalisasi ke persen
+        quality = min(100, (rms / 3000) * 100)
+
+        return round(quality, 2)
+
+    except Exception:
+        return 0
+    
 def listen_web(show_ui: bool = False, skip_process: bool = False) -> str:
     # Info kecil (opsional)
     if show_ui:
@@ -18,6 +45,10 @@ def listen_web(show_ui: bool = False, skip_process: bool = False) -> str:
 
     # ✅ recorder UI HARUS tetap dirender
     audio_bytes = st_audiorec()
+    audio_quality = 0
+    if audio_bytes:
+        audio_quality = analyze_audio_quality(audio_bytes)
+        st.session_state["voice_quality"] = audio_quality
 
     st.markdown("</div>", unsafe_allow_html=True)
 
